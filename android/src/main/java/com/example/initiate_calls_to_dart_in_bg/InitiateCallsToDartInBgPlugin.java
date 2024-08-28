@@ -2,37 +2,37 @@ package com.example.initiate_calls_to_dart_in_bg;
 
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-
+import io.flutter.embedding.engine.FlutterEngine;
+// import java.util.List;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.plugins.GeneratedPluginRegistrant
+import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 
 public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler {
 
     public static final String CALLBACK_HANDLE_KEY = "callback_handle_key";
     public static final String CALLBACK_DISPATCHER_HANDLE_KEY = "callback_dispatcher_handle_key";
-
+    
+    private static PluginRegistrantCallback pluginRegistrantCallback;
     private MethodChannel channel;
     private Context mContext;
+    private FlutterEngine backgroundFlutterEngine;
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "main_channel");
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
+        channel = new MethodChannel(binding.getBinaryMessenger(), "main_channel");
         channel.setMethodCallHandler(this);
-        mContext = flutterPluginBinding.getApplicationContext();
+        mContext = binding.getApplicationContext();
     }
 
     private long mCallbackDispatcherHandle;
 
     @Override
-    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    public void onMethodCall(MethodCall call, Result result) {
 
         if (call.method.equals("initialize")) {
 
@@ -59,7 +59,7 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
     }
 
     @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
 }
