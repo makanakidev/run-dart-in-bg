@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:flutter/services.dart';
 import 'package:initiate_calls_to_dart_in_bg/callbackDispatcher.dart';
 
