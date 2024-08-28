@@ -9,7 +9,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler {
 
@@ -31,18 +30,19 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
     public void onMethodCall(MethodCall call, Result result) {
 
         if (call.method.equals("initialize")) {
-
             ArrayList args = call.arguments();
             long callBackHandle = (long) args.get(0);
             mCallbackDispatcherHandle = callBackHandle;
 
             result.success(null);
             return;
-        } else if (call.method.equals("run")) {
-
+        }
+        
+        else if (call.method.equals("run")) {
+            
             ArrayList args = call.arguments();
             long callbackHandle = (long) args.get(0);
-
+            
             Intent i = new Intent(mContext, MyService.class);
             i.putExtra(CALLBACK_HANDLE_KEY, callbackHandle);
             i.putExtra(CALLBACK_DISPATCHER_HANDLE_KEY, mCallbackDispatcherHandle);
@@ -51,6 +51,7 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             result.success(null);
             return;
         }
+        
         result.notImplemented();
     }
 
