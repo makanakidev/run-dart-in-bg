@@ -3,9 +3,7 @@ package com.example.initiate_calls_to_dart_in_bg;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-
 import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterCallbackInformation;
