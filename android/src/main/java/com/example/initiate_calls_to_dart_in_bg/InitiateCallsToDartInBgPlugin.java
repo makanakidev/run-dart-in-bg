@@ -3,24 +3,22 @@ package com.example.initiate_calls_to_dart_in_bg;
 import android.content.Context;
 import android.content.Intent;
 import io.flutter.embedding.engine.FlutterEngine;
-// import java.util.List;
+import java.util.ArrayList;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugins.GeneratedPluginRegistrant
-import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
+import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler {
 
     public static final String CALLBACK_HANDLE_KEY = "callback_handle_key";
     public static final String CALLBACK_DISPATCHER_HANDLE_KEY = "callback_dispatcher_handle_key";
     
-    private static PluginRegistrantCallback pluginRegistrantCallback;
     private MethodChannel channel;
     private Context mContext;
-    private FlutterEngine backgroundFlutterEngine;
+    private long mCallbackDispatcherHandle;
 
     @Override
     public void onAttachedToEngine(FlutterPluginBinding binding) {
@@ -28,8 +26,6 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
         channel.setMethodCallHandler(this);
         mContext = binding.getApplicationContext();
     }
-
-    private long mCallbackDispatcherHandle;
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
