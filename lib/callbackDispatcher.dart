@@ -9,7 +9,7 @@ void callbackDispatcher() {
 
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
       final List<dynamic> args = call.arguments;
-      final Function callbackThis = PluginUtilities.getCallbackFromHandle(
+      final callbackThis = PluginUtilities.getCallbackFromHandle(
           CallbackHandle.fromRawHandle(args[0]));
       assert(callbackThis != null);
       String s = args[1] as String;
