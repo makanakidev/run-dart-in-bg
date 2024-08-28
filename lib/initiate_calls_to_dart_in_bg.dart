@@ -13,7 +13,7 @@ class InitiateCalls {
       print('Initializing callbackDispatcher...');
     await _channel.invokeMethod('initialize',
         <dynamic>[callback.toRawHandle()]);
-    } else {
+    } else
       print('Invalid callbackDispatcher!');
   }
 
@@ -23,9 +23,8 @@ class InitiateCalls {
       print('Sending run callback to native environment...');
     final List<dynamic> args = <dynamic>[action.toRawHandle()];
     await _channel.invokeMethod('run', args);
-    } else {
+    } else
       print('run callback is invalid!');
   }
 
-  
 }
