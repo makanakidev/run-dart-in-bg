@@ -15,7 +15,7 @@ class InitiateCalls {
         <dynamic>[callback.toRawHandle()]);
   }
 
-  static void test(void Function(String s) callback) async   {
+  static void run(void Function(String s) callback) async   {
 
     final List<dynamic> args = <dynamic>[
       PluginUtilities.getCallbackHandle(callback).toRawHandle()
