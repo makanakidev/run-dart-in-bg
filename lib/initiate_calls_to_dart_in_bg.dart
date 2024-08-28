@@ -8,17 +8,24 @@ class InitiateCalls {
   static const MethodChannel _channel = const MethodChannel('main_channel');
 
   static Future<void> initialize() async {
-    final CallbackHandle callback =
-    PluginUtilities.getCallbackHandle(callbackDispatcher);
+    final callback = PluginUtilities.getCallbackHandle(callbackDispatcher);
+    if(callback != null) {
+      print('Initializing callbackDispatcher...');
     await _channel.invokeMethod('initialize',
         <dynamic>[callback.toRawHandle()]);
+    } else {
+      print('Invalid callbackDispatcher!');
   }
 
-  static void run(void Function(String s) callback) async   {
-
-    final List<dynamic> args = <dynamic>[
-      PluginUtilities.getCallbackHandle(callback).toRawHandle()
-    ];
+  static void run(void Function(String s) callback) async {
+    final action = PluginUtilities.getCallbackHandle(callback);
+    if(action != null) {
+      print('Sending run callback to native environment...');
+    final List<dynamic> args = <dynamic>[action.toRawHandle()];
     await _channel.invokeMethod('run', args);
+    } else {
+      print('run callback is invalid!');
   }
+
+  
 }
