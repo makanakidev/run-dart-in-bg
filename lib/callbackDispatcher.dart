@@ -14,7 +14,8 @@ void callbackDispatcher() {
           CallbackHandle.fromRawHandle(args[0]));
       assert(callbackThis != null);
       String s = args[1] as String;
-      callbackThis?.call(s);
+      List<dynamic> params = args[2] ?? [];
+      callbackThis?.call(s, params);
   });
   
 }
