@@ -13,6 +13,6 @@ void callbackDispatcher() {
           CallbackHandle.fromRawHandle(args[0]));
       assert(callbackThis != null);
       String s = args[1] as String;
-      callbackThis(s);
+      callbackThis?.call(s);
   });
 }
