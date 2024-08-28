@@ -1,9 +1,6 @@
-
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 void callbackDispatcher() {
   const MethodChannel _backgroundChannel = MethodChannel('background_channel');
