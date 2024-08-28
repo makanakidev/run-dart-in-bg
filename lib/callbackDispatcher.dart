@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 void callbackDispatcher() {
   const MethodChannel _backgroundChannel = MethodChannel('background_channel');
   WidgetsFlutterBinding.ensureInitialized();
-  print('Initializing callbackDispatcher...');
 
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
       final List<dynamic> args = call.arguments;
