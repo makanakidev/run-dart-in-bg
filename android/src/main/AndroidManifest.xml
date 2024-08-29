@@ -4,9 +4,6 @@
     <application>
         <service
             android:name="com.dev.run_dart_in_bg.MyService"
-            android:enabled="true"
-            android:exported="true"
-            android:stopWithTask="false"
         />
     </application>
 

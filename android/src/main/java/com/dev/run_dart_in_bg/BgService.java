@@ -4,16 +4,21 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import java.util.ArrayList;
+import android.content.Context;
+import io.flutter.embedding.engine.FlutterEngine;
 import androidx.annotation.Nullable;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterCallbackInformation;
-import io.flutter.view.FlutterMain;
-import io.flutter.view.FlutterNativeView;
-import io.flutter.view.FlutterRunArguments;
+import io.flutter.embedding.engine.dart.DartExecutor;
+// import io.flutter.view.FlutterMain;
+// import io.flutter.view.FlutterNativeView;
+// import io.flutter.view.FlutterRunArguments;
+// import io.flutter.embedding.engine.dart.DartExecutor.DartCallback;
 
 import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_DISPATCHER_HANDLE_KEY;
 import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_HANDLE_KEY;
 import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_PARAMS;
+import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.backgroundFlutterEngine;
 
 public class BgService extends Service {
 
@@ -25,15 +30,16 @@ public class BgService extends Service {
         FlutterCallbackInformation flutterCallbackInformation = FlutterCallbackInformation
                 .lookupCallbackInformation(callbackDispatcherHandle);
 
-        FlutterRunArguments flutterRunArguments = new FlutterRunArguments();
-        flutterRunArguments.bundlePath = FlutterMain.findAppBundlePath();
-        flutterRunArguments.entrypoint = flutterCallbackInformation.callbackName;
-        flutterRunArguments.libraryPath = flutterCallbackInformation.callbackLibraryPath;
+        // FlutterRunArguments flutterRunArguments = new FlutterRunArguments();
+        // flutterRunArguments.bundlePath = FlutterMain.findAppBundlePath();
+        // flutterRunArguments.entrypoint = flutterCallbackInformation.callbackName;
+        // flutterRunArguments.libraryPath = flutterCallbackInformation.callbackLibraryPath;
 
-        FlutterNativeView backgroundFlutterView = new FlutterNativeView(this, true);
-        backgroundFlutterView.runFromBundle(flutterRunArguments);
+        // FlutterNativeView backgroundFlutterView = new FlutterNativeView(this, true);
+        // backgroundFlutterView.runFromBundle(flutterRunArguments);
 
-        MethodChannel mBackgroundChannel = new MethodChannel(backgroundFlutterView, "background_channel");
+        DartExecutor isolate = backgroundFlutterEngine.getDartExecutor();
+        MethodChannel mBackgroundChannel = new MethodChannel(isolate, "background_channel");
 
         long callbackHandle = intent.getLongExtra(CALLBACK_HANDLE_KEY, 0);
         ArrayList<String> callbackParams = intent.getStringArrayListExtra(CALLBACK_PARAMS);
@@ -43,7 +49,7 @@ public class BgService extends Service {
         l.add("Set to run dart function from platform!");
         l.add(callbackParams);
 
-        mBackgroundChannel.invokeMethod("dart", l);
+        mBackgroundChannel.invokeMethod("", l);
 
         return START_STICKY;
     }
