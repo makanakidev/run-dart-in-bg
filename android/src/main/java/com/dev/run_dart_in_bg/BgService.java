@@ -10,6 +10,7 @@ import io.flutter.view.FlutterCallbackInformation;
 import io.flutter.view.FlutterMain;
 import io.flutter.view.FlutterNativeView;
 import io.flutter.view.FlutterRunArguments;
+import io.flutter.embedding.engine.dart.DartExecutor;
 
 import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_DISPATCHER_HANDLE_KEY;
 import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_HANDLE_KEY;
@@ -26,14 +27,15 @@ public class BgService extends Service {
         FlutterCallbackInformation flutterCallbackInformation = FlutterCallbackInformation
                 .lookupCallbackInformation(callbackDispatcherHandle);
 
-        FlutterRunArguments flutterRunArguments = new FlutterRunArguments();
-        flutterRunArguments.bundlePath = FlutterMain.findAppBundlePath();
-        flutterRunArguments.entrypoint = flutterCallbackInformation.callbackName;
-        flutterRunArguments.libraryPath = flutterCallbackInformation.callbackLibraryPath;
+        // FlutterRunArguments flutterRunArguments = new FlutterRunArguments();
+        // flutterRunArguments.bundlePath = FlutterMain.findAppBundlePath();
+        // flutterRunArguments.entrypoint = flutterCallbackInformation.callbackName;
+        // flutterRunArguments.libraryPath = flutterCallbackInformation.callbackLibraryPath;
 
-        FlutterNativeView isolate = new FlutterNativeView(this, true);
-        isolate.runFromBundle(flutterRunArguments);
+        // FlutterNativeView isolate = new FlutterNativeView(this, true);
+        // isolate.runFromBundle(flutterRunArguments);
 
+        DartExecutor isolate = backgroundFlutterEngine.getDartExecutor();
         MethodChannel mBackgroundChannel = new MethodChannel(isolate, "background_channel");
 
         long callbackHandle = intent.getLongExtra(CALLBACK_HANDLE_KEY, 0);
