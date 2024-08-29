@@ -5,16 +5,25 @@ import 'package:flutter/services.dart';
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   const MethodChannel _backgroundChannel = MethodChannel('background_channel');
-  WidgetsFlutterBinding.ensureInitialized();
 
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
+
     final List<dynamic> args = call.arguments;
-    print('\n\nMethod arguments from native: $args ...\n'.toUpperCase());
+
+    debugPrint('\nData from platform:'.toUpperCase());
+    debugPrint('$args');
+    debugPrint('\n');
+
     final function = CallbackHandle.fromRawHandle(args[0]);
     final callback = PluginUtilities.getCallbackFromHandle(function);
+
     assert(callback != null);
-    String s = args[1] as String;
+
+    String msg = args[1] as String;
     List params = args[2] ?? [];
-    callback?.call(s, params);
+
+    callback?.call(msg, params);
   });
 }

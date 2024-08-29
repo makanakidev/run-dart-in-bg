@@ -1,4 +1,4 @@
-package com.example.initiate_calls_to_dart_in_bg;
+package com.dev.run_dart_in_bg;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,7 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
     private Context mContext;
     private long mCallbackDispatcherHandle;
     private static PluginRegistrantCallback pluginRegistrantCallback;
-    private FlutterEngine backgroundFlutterEngine;
+    private static FlutterEngine backgroundFlutterEngine;
 
     @Override
     public void onAttachedToEngine(FlutterPluginBinding binding) {

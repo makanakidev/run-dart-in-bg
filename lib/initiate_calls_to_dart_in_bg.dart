@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:initiate_calls_to_dart_in_bg/callbackDispatcher.dart';
 
@@ -8,22 +9,26 @@ class InitiateCalls {
 
   static Future<void> initialize() async {
     final callback = PluginUtilities.getCallbackHandle(callbackDispatcher);
+
     if (callback != null) {
-      print('\ninitializing callbackDispatcher...\n'.toUpperCase());
+      debugPrint('\ninitializing BgService...\n'.toUpperCase());
       await _channel
           .invokeMethod('initialize', <dynamic>[callback.toRawHandle()]);
     } else
-      print('\ninvalid callbackDispatcher!\n'.toUpperCase());
+      debugPrint('\ninvalid callback dispatcher!\n'.toUpperCase());
   }
 
   static void run(void Function(String s, List p) callback,
       [List<String> params = const []]) async {
     final action = PluginUtilities.getCallbackHandle(callback);
+
     if (action != null) {
-      print('\nsending run callback to native environment...\n'.toUpperCase());
+      debugPrint('\nsending dart function to platform...\n'.toUpperCase());
+
       final List<dynamic> args = <dynamic>[action.toRawHandle(), params];
+
       await _channel.invokeMethod('run', args);
     } else
-      print('\nrun callback is invalid!\n'.toUpperCase());
+      debugPrint('\ninvalid dart function!\n'.toUpperCase());
   }
 }

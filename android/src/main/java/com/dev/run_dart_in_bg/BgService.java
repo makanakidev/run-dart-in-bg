@@ -1,4 +1,4 @@
-package com.example.initiate_calls_to_dart_in_bg;
+package com.dev.run_dart_in_bg;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,11 +11,11 @@ import io.flutter.view.FlutterMain;
 import io.flutter.view.FlutterNativeView;
 import io.flutter.view.FlutterRunArguments;
 
-import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_DISPATCHER_HANDLE_KEY;
-import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_HANDLE_KEY;
-import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_PARAMS;
+import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_DISPATCHER_HANDLE_KEY;
+import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_HANDLE_KEY;
+import static com.dev.run_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_PARAMS;
 
-public class MyService extends Service {
+public class BgService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,10 +40,10 @@ public class MyService extends Service {
 
         final ArrayList<Object> l = new ArrayList<Object>();
         l.add(callbackHandle);
-        l.add("Ready to run dart callback in java!");
+        l.add("Set to run dart function from platform!");
         l.add(callbackParams);
 
-        mBackgroundChannel.invokeMethod("", l);
+        mBackgroundChannel.invokeMethod("dart", l);
 
         return START_STICKY;
     }
