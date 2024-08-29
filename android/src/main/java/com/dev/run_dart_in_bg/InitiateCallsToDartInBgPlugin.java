@@ -43,15 +43,15 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
     // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class. 
-    public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "main_channel");
-    channel.setMethodCallHandler(new InitiateCallsToDartInBgPlugin());
-     // The pluginRegistrantCallback should only be set in the V1 embedding as
-     // plugin registration is done via reflection in the V2 embedding.
-        if (pluginRegistrantCallback != null) {
-             pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
-          }
-    }
+    // public static void registerWith(Registrar registrar) {
+    // final MethodChannel channel = new MethodChannel(registrar.messenger(), "main_channel");
+    // channel.setMethodCallHandler(new InitiateCallsToDartInBgPlugin());
+    //  // The pluginRegistrantCallback should only be set in the V1 embedding as
+    //  // plugin registration is done via reflection in the V2 embedding.
+    //     if (pluginRegistrantCallback != null) {
+    //          pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
+    //       }
+    // }
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
