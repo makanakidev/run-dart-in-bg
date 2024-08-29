@@ -68,7 +68,7 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             long callbackHandle = (long) args.get(0);
             ArrayList<String> params = (ArrayList<String>) args.get(1); // parameters sent back to dart function
 
-            Intent i = new Intent(mContext, MyService.class);
+            Intent i = new Intent(mContext, BgService.class);
 
             i.putExtra(CALLBACK_HANDLE_KEY, callbackHandle);
             i.putExtra(CALLBACK_DISPATCHER_HANDLE_KEY, mCallbackDispatcherHandle);
