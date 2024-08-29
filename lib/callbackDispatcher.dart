@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   const MethodChannel _backgroundChannel = MethodChannel('background_channel');
+  WidgetsFlutterBinding.ensureInitialized();
 
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
-    WidgetsFlutterBinding.ensureInitialized();
     DartPluginRegistrant.ensureInitialized();
 
     final List<dynamic> args = call.arguments;

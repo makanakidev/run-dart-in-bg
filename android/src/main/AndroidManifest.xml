@@ -3,7 +3,7 @@
 
     <application>
         <service
-            android:name="com.dev.run_dart_in_bg.MyService"
+            android:name="com.dev.run_dart_in_bg.BgService"
         />
     </application>
 
