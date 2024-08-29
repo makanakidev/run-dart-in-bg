@@ -46,6 +46,12 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             long callBackHandle = (long) args.get(0);
             mCallbackDispatcherHandle = callBackHandle;
 
+            // The pluginRegistrantCallback should only be set in the V1 embedding as
+            // plugin registration is done via reflection in the V2 embedding.
+            if (pluginRegistrantCallback != null) {
+                pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
+            }
+
             result.success(null);
             return;
         } else if (call.method.equals("run")) {
@@ -58,12 +64,6 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             i.putExtra(CALLBACK_HANDLE_KEY, callbackHandle);
             i.putExtra(CALLBACK_DISPATCHER_HANDLE_KEY, mCallbackDispatcherHandle);
             i.putStringArrayListExtra(CALLBACK_PARAMS, params);
-
-            // The pluginRegistrantCallback should only be set in the V1 embedding as
-            // plugin registration is done via reflection in the V2 embedding.
-            if (pluginRegistrantCallback != null) {
-                pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
-            }
 
             mContext.startService(i);
 
