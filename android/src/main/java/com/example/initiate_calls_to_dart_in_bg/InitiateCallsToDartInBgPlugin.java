@@ -10,9 +10,10 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback;
+import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 
-public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler, PluginRegistrantCallback {
+public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler {
 
     public static final String CALLBACK_HANDLE_KEY = "callback_handle_key";
     public static final String CALLBACK_DISPATCHER_HANDLE_KEY = "callback_dispatcher_handle_key";
@@ -32,10 +33,24 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
         backgroundFlutterEngine = new FlutterEngine(mContext);
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        pluginRegistrantCallback = this;
+
+    // This static function is optional and equivalent to onAttachedToEngine. It supports the old
+    // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
+    // plugin registration via this function while apps migrate to use the new Android APIs
+    // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
+    //
+    // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
+    // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
+    // depending on the user's project. onAttachedToEngine or registerWith must both be defined
+    // in the same class. 
+    public static void registerWith(Registrar registrar) {
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "main_channel");
+    channel.setMethodCallHandler(new InitiateCallsToDartInBgPlugin());
+     // The pluginRegistrantCallback should only be set in the V1 embedding as
+     // plugin registration is done via reflection in the V2 embedding.
+        if (pluginRegistrantCallback != null) {
+             pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
+          }
     }
 
     @Override
@@ -45,12 +60,6 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             ArrayList args = call.arguments();
             long callBackHandle = (long) args.get(0);
             mCallbackDispatcherHandle = callBackHandle;
-
-            // The pluginRegistrantCallback should only be set in the V1 embedding as
-            // plugin registration is done via reflection in the V2 embedding.
-            if (pluginRegistrantCallback != null) {
-                pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
-            }
 
             result.success(null);
             return;
