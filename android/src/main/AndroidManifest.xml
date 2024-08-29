@@ -6,6 +6,7 @@
             android:name="com.example.initiate_calls_to_dart_in_bg.MyService"
             android:enabled="true"
             android:exported="false"
+            android:stopWithTask="false
          />
     </application>
 
