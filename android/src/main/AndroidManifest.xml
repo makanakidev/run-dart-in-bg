@@ -2,11 +2,11 @@
     package="com.example.initiate_calls_to_dart_in_bg">
 
     <application>
-        <service android:name="com.example.initiate_calls_to_dart_in_bg.MyService" />
-
-        <meta-data
-         android:name="flutterEmbedding"
-         android:value="2" />
+        <service
+            android:name="com.example.initiate_calls_to_dart_in_bg.MyService"
+            android:enabled="true"
+            android:exported="false"
+         />
     </application>
 
 </manifest>
