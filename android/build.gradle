@@ -1,4 +1,4 @@
-group 'com.example.initiate_calls_to_dart_in_bg'
+group 'com.dev.run_dart_in_bg'
 version '1.0'
 
 buildscript {

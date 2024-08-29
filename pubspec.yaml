@@ -27,5 +27,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.initiate_calls_to_dart_in_bg
+        package: com.dev.run_dart_in_bg
         pluginClass: InitiateCallsToDartInBgPlugin

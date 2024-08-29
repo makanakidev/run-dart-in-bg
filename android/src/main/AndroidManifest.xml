@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.initiate_calls_to_dart_in_bg">
+    package="com.dev.run_dart_in_bg">
 
     <application>
         <service
