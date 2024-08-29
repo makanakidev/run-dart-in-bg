@@ -32,7 +32,7 @@ public class BgService extends Service {
         flutterRunArguments.libraryPath = flutterCallbackInformation.callbackLibraryPath;
 
         FlutterNativeView isolate = new FlutterNativeView(this, true);
-        backgroundFlutterView.runFromBundle(flutterRunArguments);
+        isolate.runFromBundle(flutterRunArguments);
 
         MethodChannel mBackgroundChannel = new MethodChannel(isolate, "background_channel");
 
