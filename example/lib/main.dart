@@ -17,7 +17,7 @@ class MainScreenState extends State<MyApp> {
     InitiateCalls.initialize();
   }
 
-  static void callback(String s) async {
+  static void callback(String s, List data) async {
     print("I am from main.dart");
     print(s);
   }
@@ -38,7 +38,7 @@ class MainScreenState extends State<MyApp> {
                       child: TextButton(
                         child: const Text('Run'),
                         onPressed: () {
-                          InitiateCalls.test(callback);
+                          InitiateCalls.run(callback);
                         },
                       ),
                     ),

@@ -14,7 +14,8 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
 
     public static final String CALLBACK_HANDLE_KEY = "callback_handle_key";
     public static final String CALLBACK_DISPATCHER_HANDLE_KEY = "callback_dispatcher_handle_key";
-    
+    public static final String CALLBACK_PARAMS = "callback_params";
+
     private MethodChannel channel;
     private Context mContext;
     private long mCallbackDispatcherHandle;
@@ -36,22 +37,22 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
 
             result.success(null);
             return;
-        }
-        
-        else if (call.method.equals("run")) {
-            
+        } else if (call.method.equals("run")) {
             ArrayList args = call.arguments();
             long callbackHandle = (long) args.get(0);
-            
+            ArrayList<String> params = (ArrayList<String>) args.get(1); // parameters sent back to dart function
+
             Intent i = new Intent(mContext, MyService.class);
+
             i.putExtra(CALLBACK_HANDLE_KEY, callbackHandle);
             i.putExtra(CALLBACK_DISPATCHER_HANDLE_KEY, mCallbackDispatcherHandle);
+            i.putStringArrayListExtra(CALLBACK_PARAMS, params);
+
             mContext.startService(i);
 
             result.success(null);
             return;
         }
-        
         result.notImplemented();
     }
 

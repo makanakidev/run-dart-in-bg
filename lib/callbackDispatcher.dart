@@ -9,13 +9,13 @@ void callbackDispatcher() {
   DartPluginRegistrant.ensureInitialized();
 
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
-      final List<dynamic> args = call.arguments;
-      final callbackThis = PluginUtilities.getCallbackFromHandle(
-          CallbackHandle.fromRawHandle(args[0]));
-      assert(callbackThis != null);
-      String s = args[1] as String;
-      List<dynamic> params = args[2] ?? [];
-      callbackThis?.call(s, params);
+    final List<dynamic> args = call.arguments;
+    print('\n\nMethod arguments from native: $args ...\n'.toUpperCase());
+    final function = CallbackHandle.fromRawHandle(args[0]);
+    final callback = PluginUtilities.getCallbackFromHandle(function);
+    assert(callback != null);
+    String s = args[1] as String;
+    List params = args[2] ?? [];
+    callback?.call(s, params);
   });
-  
 }

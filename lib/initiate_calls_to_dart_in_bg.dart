@@ -9,21 +9,21 @@ class InitiateCalls {
   static Future<void> initialize() async {
     final callback = PluginUtilities.getCallbackHandle(callbackDispatcher);
     if (callback != null) {
-      print('Initializing callbackDispatcher...');
+      print('\ninitializing callbackDispatcher...\n'.toUpperCase());
       await _channel
           .invokeMethod('initialize', <dynamic>[callback.toRawHandle()]);
     } else
-      print('Invalid callbackDispatcher!');
+      print('\ninvalid callbackDispatcher!\n'.toUpperCase());
   }
 
-  static void run(void Function(String s, List<String> p) callback,
-      [List<String> params = []]) async {
+  static void run(void Function(String s, List p) callback,
+      [List<String> params = const []]) async {
     final action = PluginUtilities.getCallbackHandle(callback);
     if (action != null) {
-      print('Sending run callback to native environment...');
+      print('\nsending run callback to native environment...\n'.toUpperCase());
       final List<dynamic> args = <dynamic>[action.toRawHandle(), params];
       await _channel.invokeMethod('run', args);
     } else
-      print('run callback is invalid!');
+      print('\nrun callback is invalid!\n'.toUpperCase());
   }
 }

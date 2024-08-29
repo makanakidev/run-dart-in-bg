@@ -13,6 +13,7 @@ import io.flutter.view.FlutterRunArguments;
 
 import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_DISPATCHER_HANDLE_KEY;
 import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_HANDLE_KEY;
+import static com.example.initiate_calls_to_dart_in_bg.InitiateCallsToDartInBgPlugin.CALLBACK_PARAMS;
 
 public class MyService extends Service {
 
@@ -21,8 +22,8 @@ public class MyService extends Service {
 
         long callbackDispatcherHandle = intent.getLongExtra(CALLBACK_DISPATCHER_HANDLE_KEY, 0);
 
-        FlutterCallbackInformation flutterCallbackInformation =
-                FlutterCallbackInformation.lookupCallbackInformation(callbackDispatcherHandle);
+        FlutterCallbackInformation flutterCallbackInformation = FlutterCallbackInformation
+                .lookupCallbackInformation(callbackDispatcherHandle);
 
         FlutterRunArguments flutterRunArguments = new FlutterRunArguments();
         flutterRunArguments.bundlePath = FlutterMain.findAppBundlePath();
@@ -35,10 +36,12 @@ public class MyService extends Service {
         MethodChannel mBackgroundChannel = new MethodChannel(backgroundFlutterView, "background_channel");
 
         long callbackHandle = intent.getLongExtra(CALLBACK_HANDLE_KEY, 0);
+        ArrayList<String> callbackParams = intent.getStringArrayListExtra(CALLBACK_PARAMS);
 
         final ArrayList<Object> l = new ArrayList<Object>();
         l.add(callbackHandle);
-        l.add("Hello, I am transferred from java to dart world");
+        l.add("Ready to run dart callback in java!");
+        l.add(callbackParams);
 
         mBackgroundChannel.invokeMethod("", l);
 
