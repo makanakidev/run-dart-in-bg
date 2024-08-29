@@ -9,8 +9,10 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback;
+import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 
-public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler {
+public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallHandler, PluginRegistrantCallback {
 
     public static final String CALLBACK_HANDLE_KEY = "callback_handle_key";
     public static final String CALLBACK_DISPATCHER_HANDLE_KEY = "callback_dispatcher_handle_key";
@@ -19,12 +21,21 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
     private MethodChannel channel;
     private Context mContext;
     private long mCallbackDispatcherHandle;
+    private static PluginRegistrantCallback pluginRegistrantCallback;
+    private FlutterEngine backgroundFlutterEngine;
 
     @Override
     public void onAttachedToEngine(FlutterPluginBinding binding) {
         channel = new MethodChannel(binding.getBinaryMessenger(), "main_channel");
         channel.setMethodCallHandler(this);
         mContext = binding.getApplicationContext();
+        backgroundFlutterEngine = new FlutterEngine(mContext);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        pluginRegistrantCallback = this;
     }
 
     @Override
@@ -47,6 +58,12 @@ public class InitiateCallsToDartInBgPlugin implements FlutterPlugin, MethodCallH
             i.putExtra(CALLBACK_HANDLE_KEY, callbackHandle);
             i.putExtra(CALLBACK_DISPATCHER_HANDLE_KEY, mCallbackDispatcherHandle);
             i.putStringArrayListExtra(CALLBACK_PARAMS, params);
+
+            // The pluginRegistrantCallback should only be set in the V1 embedding as
+            // plugin registration is done via reflection in the V2 embedding.
+            if (pluginRegistrantCallback != null) {
+                pluginRegistrantCallback.registerWith(new ShimPluginRegistry(backgroundFlutterEngine));
+            }
 
             mContext.startService(i);
 
