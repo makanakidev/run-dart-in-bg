@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:initiate_calls_to_dart_in_bg/callbackDispatcher.dart';
+import 'callbackDispatcher.dart';
 
 class InitiateCalls {
   static const MethodChannel _channel = const MethodChannel('main_channel');
@@ -18,8 +18,10 @@ class InitiateCalls {
       debugPrint('\ninvalid callback dispatcher!\n'.toUpperCase());
   }
 
-  static void run(void Function(String s, List p) callback,
-      [List<String> params = const []]) async {
+  static void run(
+    void Function(String s, List p) callback, [
+    List<String> params = const [],
+  ]) async {
     final action = PluginUtilities.getCallbackHandle(callback);
 
     if (action != null) {
